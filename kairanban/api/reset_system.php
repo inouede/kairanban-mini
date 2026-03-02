@@ -5,19 +5,24 @@
  */
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
 // セッション開始
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    session_start([
+        'cookie_httponly' => true,
+        'cookie_secure'   => true,
+        'cookie_samesite' => 'Strict'
+    ]);
 }
 
 // ログインチェック
 $isLoggedIn = isset($_SESSION['user_id']);
-$currentUserEmail = $_SESSION['user_email'] ?? null;
+$currentUserRole = $_SESSION['user_role'] ?? null;
 
-// 管理者チェック
-if (!$isLoggedIn || $currentUserEmail !== 'admin@example.com') {
+// 管理者チェック（ロールベース）
+if (!$isLoggedIn || $currentUserRole !== 'ADMIN') {
     ?>
     <!DOCTYPE html>
     <html lang="ja">

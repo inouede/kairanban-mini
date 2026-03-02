@@ -6,6 +6,8 @@
 
 require_once __DIR__ . '/config.php';
 
+checkAdmin();
+
 echo "=== 購読クリーンアップツール ===\n\n";
 
 $subscriptions = readJsonFile(SUBSCRIPTIONS_FILE, []);

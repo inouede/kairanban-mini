@@ -4,6 +4,10 @@
  * どの関数を使っているか確認
  */
 
+require_once __DIR__ . '/config.php';
+
+checkAdmin();
+
 echo "=== notifications.php構造確認 ===\n\n";
 
 $notificationsFile = __DIR__ . '/notifications.php';

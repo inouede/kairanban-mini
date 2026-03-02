@@ -6,6 +6,8 @@
 
 require_once __DIR__ . '/config.php';
 
+checkAdmin();
+
 echo "=== 重複購読削除ツール ===\n\n";
 
 // 購読一覧を取得

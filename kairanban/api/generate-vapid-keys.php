@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/config.php';
 
+// 管理者のみ実行可能
+checkAdmin();
+
 use Minishlink\WebPush\VAPID;
 
 header('Content-Type: text/plain; charset=UTF-8');

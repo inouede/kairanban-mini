@@ -6,6 +6,8 @@
 
 require_once __DIR__ . '/config.php';
 
+checkAdmin();
+
 echo "=== 購読状況の詳細確認 ===\n\n";
 
 // ユーザー一覧を取得

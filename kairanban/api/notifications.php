@@ -310,7 +310,7 @@ function handleSendNotification() {
         ]);
     } catch (Exception $e) {
         error_log("[notifications.php] ❌ 通知送信エラー: " . $e->getMessage());
-        sendError('通知の送信に失敗しました: ' . $e->getMessage(), 500);
+        sendError('通知の送信に失敗しました', 500);
     }
 }
 
