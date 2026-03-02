@@ -182,9 +182,27 @@ function handleDelete() {
     if (!writeJsonFile(DEPARTMENTS_FILE, $departments)) {
         sendError('所属の削除に失敗しました', 500);
     }
-    
+
+    // 削除した所属に属するユーザーの department を空文字にリセット
+    $users = readJsonFile(USERS_FILE, []);
+    $usersUpdated = false;
+
+    foreach ($users as &$user) {
+        if ($user['department'] === $name) {
+            $user['department'] = '';
+            $usersUpdated = true;
+        }
+    }
+    unset($user);
+
+    if ($usersUpdated) {
+        if (!writeJsonFile(USERS_FILE, $users)) {
+            error_log("Failed to update users after department deletion");
+        }
+    }
+
     // 監査ログに記録
     addAuditLog($_SESSION['user_id'], $_SESSION['user_name'], 'DELETE_DEPARTMENT', "所属を削除: {$name}");
-    
+
     sendJson(['success' => true]);
 }

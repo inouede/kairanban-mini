@@ -10,21 +10,8 @@
         "readBy": [
             "user_resident_guest"
         ],
-        "comments": [
-            {
-                "id": "comment_698598a8b741d6.01854264",
-                "userId": "user_698596c16de936.86866150",
-                "userName": "赤松",
-                "text": "わかりました",
-                "createdAt": 1770363048000
-            }
-        ],
-        "reactions": [
-            {
-                "userId": "user_698596c16de936.86866150",
-                "emoji": "👍"
-            }
-        ],
+        "comments": [],
+        "reactions": [],
         "importance": "NORMAL",
         "isArchived": false
     },
@@ -39,21 +26,8 @@
         "readBy": [
             "admin1"
         ],
-        "comments": [
-            {
-                "id": "comment_6985988bd8a2b6.72669986",
-                "userId": "user_698596c16de936.86866150",
-                "userName": "赤松",
-                "text": "見ました",
-                "createdAt": 1770363019000
-            }
-        ],
-        "reactions": [
-            {
-                "userId": "user_698596c16de936.86866150",
-                "emoji": "👀"
-            }
-        ],
+        "comments": [],
+        "reactions": [],
         "importance": "NORMAL",
         "isArchived": false
     }
