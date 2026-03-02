@@ -75,15 +75,20 @@ function handleCreate() {
         sendError('名前、メールアドレス、パスワード、所属は必須です');
     }
     
+    // メールアドレス形式チェック
+    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        sendError('メールアドレスの形式が正しくありません');
+    }
+
     $users = readJsonFile(USERS_FILE, []);
-    
+
     // メールアドレスの重複チェック
     foreach ($users as $user) {
         if ($user['email'] === $data['email']) {
             sendError('このメールアドレスは既に使用されています');
         }
     }
-    
+
     $newUser = [
         'id' => uniqid('user_', true),
         'name' => sanitize($data['name']),
@@ -131,6 +136,10 @@ function handleUpdate() {
                 $user['name'] = sanitize($data['name']);
             }
             if (isset($data['email'])) {
+                // メールアドレス形式チェック
+                if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                    sendError('メールアドレスの形式が正しくありません');
+                }
                 // メールアドレスの重複チェック（自分以外）
                 foreach ($users as $u) {
                     if ($u['id'] !== $data['userId'] && $u['email'] === $data['email']) {

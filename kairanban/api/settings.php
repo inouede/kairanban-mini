@@ -65,7 +65,11 @@ function handleUpdate() {
     
     // 更新可能なフィールドのみ更新
     if (isset($data['primaryColor'])) {
-        $settings['primaryColor'] = sanitize($data['primaryColor']);
+        // CSS カラーコードのホワイトリスト検証（#RRGGBB または #RGB）
+        if (!preg_match('/^#[0-9A-Fa-f]{3}(?:[0-9A-Fa-f]{3})?$/', $data['primaryColor'])) {
+            sendError('primaryColor は #RRGGBB 形式で指定してください');
+        }
+        $settings['primaryColor'] = $data['primaryColor'];
     }
     if (isset($data['appName'])) {
         $settings['appName'] = sanitize($data['appName']);
@@ -88,10 +92,12 @@ function handleUpdate() {
 }
 
 /**
- * 監査ログを取得
+ * 監査ログを取得（最新200件）
  */
 function handleGetLogs() {
     checkAdmin();
     $logs = readJsonFile(AUDIT_LOGS_FILE, []);
+    // 最新200件のみ返す（大量データによるメモリ枯渇防止）
+    $logs = array_slice($logs, -200);
     sendJson(['logs' => $logs]);
 }
