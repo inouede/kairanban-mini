@@ -139,16 +139,35 @@ function handleUpdate() {
             $usersUpdated = true;
         }
     }
-    
+    unset($user);
+
     if ($usersUpdated) {
         if (!writeJsonFile(USERS_FILE, $users)) {
             error_log("Failed to update users after department rename");
         }
     }
-    
+
+    // 回覧板の targetDepartment も更新
+    $notices = readJsonFile(NOTICES_FILE, []);
+    $noticesUpdated = false;
+
+    foreach ($notices as &$notice) {
+        if ($notice['targetDepartment'] === $oldName) {
+            $notice['targetDepartment'] = $newName;
+            $noticesUpdated = true;
+        }
+    }
+    unset($notice);
+
+    if ($noticesUpdated) {
+        if (!writeJsonFile(NOTICES_FILE, $notices)) {
+            error_log("Failed to update notices after department rename");
+        }
+    }
+
     // 監査ログに記録
     addAuditLog($_SESSION['user_id'], $_SESSION['user_name'], 'UPDATE_DEPARTMENT', "所属を更新: {$oldName} → {$newName}");
-    
+
     sendJson(['success' => true]);
 }
 

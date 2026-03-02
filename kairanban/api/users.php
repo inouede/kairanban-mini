@@ -160,11 +160,12 @@ function handleUpdate() {
             break;
         }
     }
-    
+    unset($user);
+
     if (!$updated) {
         sendError('ユーザーが見つかりません', 404);
     }
-    
+
     if (!writeJsonFile(USERS_FILE, $users)) {
         sendError('ユーザーの更新に失敗しました', 500);
     }
