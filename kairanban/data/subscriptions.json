@@ -1,0 +1,15 @@
+[
+    {
+        "userId": "user_resident_guest",
+        "userName": "一般住民",
+        "subscription": {
+            "endpoint": "https:\/\/fcm.googleapis.com\/fcm\/send\/dsKZ8sAnBnM:APA91bEPF9GHv9_Gjvv5dNrxn_zEHoM6pEjny4OhB1Gad6aWO-bsyx22zDjj07r-Vsb3vlXO9xwo-kuqf6BKZ7y-aRgblTWJ4hZ2sPlNPuyLREejD-4AGnGza_JVtjEsiiYvU27lG8hg",
+            "expirationTime": null,
+            "keys": {
+                "p256dh": "BGDZILXZGVqPTceGG9yjmPzZW1R5H6YzfkZsTwTq9Jg7IyLJuH0YfubeAnbml8ewJ9pIsr44_MnDr6hHUa17MF8",
+                "auth": "kQpOQbCq8_IH5LJHpkyHmw"
+            }
+        },
+        "createdAt": 1772411323
+    }
+]

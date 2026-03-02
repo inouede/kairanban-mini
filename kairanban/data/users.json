@@ -1,0 +1,18 @@
+[
+    {
+        "id": "admin1",
+        "name": "町内 会長",
+        "email": "admin@example.com",
+        "role": "ADMIN",
+        "department": "北班",
+        "passwordHash": "$2y$10$kBmruMRiIyYUC8NjInX1heyMHb92vB891XGpAufEXnWrCvjdyi2mW"
+    },
+    {
+        "id": "user_resident_guest",
+        "name": "一般住民",
+        "email": "resident@example.com",
+        "role": "RESIDENT",
+        "department": "北班",
+        "passwordHash": "$2b$10$pANYNzKHBqnPTVQgFwWZxuJexVnIFFtbYnj9mVs0/bKRiLR0mCu/2"
+    }
+]

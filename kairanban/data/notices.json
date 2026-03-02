@@ -1,0 +1,60 @@
+[
+    {
+        "id": "notice_698597c23ced73.86662486",
+        "title": "【重要】回覧板のテスト",
+        "content": "重要な回覧板のテスト送信です。",
+        "authorId": "admin1",
+        "targetDepartment": "ALL",
+        "createdAt": 1770362818000,
+        "attachments": [],
+        "readBy": [
+            "user_resident_guest"
+        ],
+        "comments": [
+            {
+                "id": "comment_698598a8b741d6.01854264",
+                "userId": "user_698596c16de936.86866150",
+                "userName": "赤松",
+                "text": "わかりました",
+                "createdAt": 1770363048000
+            }
+        ],
+        "reactions": [
+            {
+                "userId": "user_698596c16de936.86866150",
+                "emoji": "👍"
+            }
+        ],
+        "importance": "NORMAL",
+        "isArchived": false
+    },
+    {
+        "id": "notice_69859784169c83.14870749",
+        "title": "通常の回覧板のテスト",
+        "content": "通常の回覧板のテスト送信です。",
+        "authorId": "admin1",
+        "targetDepartment": "ALL",
+        "createdAt": 1770362756000,
+        "attachments": [],
+        "readBy": [
+            "admin1"
+        ],
+        "comments": [
+            {
+                "id": "comment_6985988bd8a2b6.72669986",
+                "userId": "user_698596c16de936.86866150",
+                "userName": "赤松",
+                "text": "見ました",
+                "createdAt": 1770363019000
+            }
+        ],
+        "reactions": [
+            {
+                "userId": "user_698596c16de936.86866150",
+                "emoji": "👀"
+            }
+        ],
+        "importance": "NORMAL",
+        "isArchived": false
+    }
+]
