@@ -249,9 +249,9 @@ function handleUnsubscribe() {
  * プッシュ通知を送信
  */
 function handleSendNotification() {
-    checkAuth();
+    checkAdmin(); // 一般ユーザーによる任意通知送信を防止
     $data = getPostData();
-    
+
     if (!isset($data['title']) || !isset($data['body'])) {
         sendError('titleとbodyが必要です');
     }

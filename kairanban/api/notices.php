@@ -230,7 +230,8 @@ function handleMarkRead() {
             break;
         }
     }
-    
+    unset($notice);
+
     if ($updated) {
         if (!writeJsonFile(NOTICES_FILE, $notices)) {
             sendError('既読状態の保存に失敗しました', 500);
@@ -273,11 +274,12 @@ function handleAddComment() {
             break;
         }
     }
-    
+    unset($notice);
+
     if (!$updated) {
         sendError('回覧板が見つかりません', 404);
     }
-    
+
     if (!writeJsonFile(NOTICES_FILE, $notices)) {
         sendError('コメントの保存に失敗しました', 500);
     }
@@ -330,15 +332,16 @@ function handleToggleReaction() {
             break;
         }
     }
-    
+    unset($notice);
+
     if (!$updated) {
         sendError('回覧板が見つかりません', 404);
     }
-    
+
     if (!writeJsonFile(NOTICES_FILE, $notices)) {
         sendError('リアクションの保存に失敗しました', 500);
     }
-    
+
     sendJson(['success' => true]);
 }
 
@@ -352,12 +355,18 @@ function sendNoticeNotification($notice, $type = 'new', $targetUserIds = null) {
         
         // 対象ユーザーを特定
         if ($targetUserIds !== null) {
-            // 指定されたユーザーのみ
+            // 催促通知など: 明示的に指定されたユーザーのみ
             $targetUsers = array_filter($users, function($user) use ($targetUserIds) {
                 return in_array($user['id'], $targetUserIds);
             });
+        } elseif (isset($notice['targetDepartment']) && $notice['targetDepartment'] !== 'ALL' && $notice['targetDepartment'] !== '') {
+            // 配信先が特定の班に絞られている場合はその班のユーザーのみ
+            $targetDept = $notice['targetDepartment'];
+            $targetUsers = array_filter($users, function($user) use ($targetDept) {
+                return $user['department'] === $targetDept;
+            });
         } else {
-            // 全員に送る
+            // targetDepartment が 'ALL' または未指定の場合は全員に送る
             $targetUsers = $users;
         }
 
