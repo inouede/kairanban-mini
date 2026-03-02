@@ -102,7 +102,7 @@ function handleCreate() {
         'readBy' => [],
         'comments' => [],
         'reactions' => [],
-        'importance' => $data['importance'] ?? 'NORMAL',
+        'importance' => in_array($data['importance'] ?? '', ['NORMAL', 'HIGH', 'URGENT']) ? $data['importance'] : 'NORMAL',
         'isArchived' => false
     ];
     

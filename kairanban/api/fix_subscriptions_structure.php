@@ -6,6 +6,8 @@
 
 require_once __DIR__ . '/config.php';
 
+checkAdmin();
+
 echo "=== subscriptions.json 修復ツール ===\n\n";
 
 // 現在のデータを読み込み

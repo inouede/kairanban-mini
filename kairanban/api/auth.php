@@ -81,6 +81,9 @@ function handleLogin() {
         sendError('メールアドレスまたはパスワードが正しくありません', 401);
     }
     
+    // セッション固定攻撃対策: ログイン成功時にセッションIDを再生成
+    session_regenerate_id(true);
+
     // セッションに保存
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_email'] = $user['email'];

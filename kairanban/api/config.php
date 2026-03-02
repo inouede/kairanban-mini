@@ -39,11 +39,12 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 require_once __DIR__ . '/vapid.php';
 require_once __DIR__ . '/webpush.php';
 
-// CORS設定（必要に応じて調整）
+// セキュリティヘッダー
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 
 /**
  * JSONファイルを安全に読み込む

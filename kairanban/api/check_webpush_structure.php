@@ -4,6 +4,10 @@
  * 利用可能な関数を確認
  */
 
+require_once __DIR__ . '/config.php';
+
+checkAdmin();
+
 echo "=== webpush.php構造確認 ===\n\n";
 
 $webpushFile = __DIR__ . '/webpush.php';
