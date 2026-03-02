@@ -13,7 +13,7 @@ ini_set('error_log', __DIR__ . '/../data/error.log');
 // セッション設定
 session_start([
     'cookie_httponly' => true,
-    'cookie_secure' => false, // HTTPSの場合はtrueに
+    'cookie_secure' => true,
     'cookie_samesite' => 'Strict'
 ]);
 
