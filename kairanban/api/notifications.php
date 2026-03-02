@@ -355,7 +355,8 @@ function handleMarkNotificationRead() {
             break;
         }
     }
-    
+    unset($n);
+
     if (!writeJsonFile(PENDING_NOTIFICATIONS_FILE, $notifications)) {
         sendError('既読状態の保存に失敗しました', 500);
     }
