@@ -232,7 +232,58 @@ function handleDelete() {
         writeJsonFile(SUBSCRIPTIONS_FILE, $subscriptions);
         error_log("[users.php] ユーザー削除: {$deletedUserName} の購読情報を {$deletedSubscriptions} 件削除しました");
     }
-    
+
+    // notices.json 内の readBy・comments・reactions から削除ユーザーの参照を除去
+    $notices = readJsonFile(NOTICES_FILE, []);
+    $noticesUpdated = false;
+    $deletedUserId = $data['userId'];
+
+    foreach ($notices as &$notice) {
+        // readBy から除去
+        if (in_array($deletedUserId, $notice['readBy'] ?? [])) {
+            $notice['readBy'] = array_values(array_filter($notice['readBy'], function($uid) use ($deletedUserId) {
+                return $uid !== $deletedUserId;
+            }));
+            $noticesUpdated = true;
+        }
+        // comments から除去
+        if (!empty($notice['comments'])) {
+            $before = count($notice['comments']);
+            $notice['comments'] = array_values(array_filter($notice['comments'], function($c) use ($deletedUserId) {
+                return $c['userId'] !== $deletedUserId;
+            }));
+            if (count($notice['comments']) !== $before) {
+                $noticesUpdated = true;
+            }
+        }
+        // reactions から除去
+        if (!empty($notice['reactions'])) {
+            $before = count($notice['reactions']);
+            $notice['reactions'] = array_values(array_filter($notice['reactions'], function($r) use ($deletedUserId) {
+                return $r['userId'] !== $deletedUserId;
+            }));
+            if (count($notice['reactions']) !== $before) {
+                $noticesUpdated = true;
+            }
+        }
+    }
+    unset($notice);
+
+    if ($noticesUpdated) {
+        if (!writeJsonFile(NOTICES_FILE, $notices)) {
+            error_log("[users.php] Failed to update notices after user deletion");
+        }
+    }
+
+    // pending_notifications.json からも削除ユーザーの通知を除去
+    $notifications = readJsonFile(PENDING_NOTIFICATIONS_FILE, []);
+    $filteredNotifications = array_values(array_filter($notifications, function($n) use ($deletedUserId) {
+        return $n['userId'] !== $deletedUserId;
+    }));
+    if (count($filteredNotifications) !== count($notifications)) {
+        writeJsonFile(PENDING_NOTIFICATIONS_FILE, $filteredNotifications);
+    }
+
     // 監査ログに記録
     addAuditLog($_SESSION['user_id'], $_SESSION['user_name'], 'DELETE_USER', "ユーザーを削除: {$deletedUserName}");
     

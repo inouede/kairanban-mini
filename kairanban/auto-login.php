@@ -47,6 +47,7 @@ try {
     $_SESSION['user_email'] = $user['email'];
     $_SESSION['user_role'] = $user['role'];
     $_SESSION['user_name'] = $user['name'];
+    $_SESSION['user_department'] = $user['department'] ?? '';
     $_SESSION['login_method'] = 'qr_nfc'; // ログイン方法を記録
     
     // 監査ログに記録

@@ -58,7 +58,7 @@
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
         body: JSON.stringify({
-          subscription: subscription,
+          subscription: subscription.toJSON(),
           userId: currentUserId
         })
       });
@@ -79,7 +79,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
-        body: JSON.stringify({ subscription: subscription })
+        body: JSON.stringify({ subscription: subscription.toJSON() })
       });
       
       if (registerResponse.ok) {
