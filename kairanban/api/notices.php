@@ -132,19 +132,19 @@ function handleCreate() {
  * 回覧板を更新
  */
 function handleUpdate() {
-    checkAuth();
+    $user = checkAdmin(); // title/content/isArchived の変更は管理者のみ
     $data = getPostData();
-    
+
     if (!isset($data['noticeId'])) {
         sendError('noticeIdが必要です');
     }
-    
+
     $notices = readJsonFile(NOTICES_FILE, []);
     $updated = false;
-    
+
     foreach ($notices as &$notice) {
         if ($notice['id'] === $data['noticeId']) {
-            // 更新可能なフィールドのみ更新
+            // 管理者のみ変更できるフィールド
             if (isset($data['title'])) {
                 $notice['title'] = sanitize($data['title']);
             }
@@ -154,25 +154,21 @@ function handleUpdate() {
             if (isset($data['isArchived'])) {
                 $notice['isArchived'] = (bool)$data['isArchived'];
             }
-            if (isset($data['comments'])) {
-                $notice['comments'] = $data['comments'];
-            }
-            if (isset($data['reactions'])) {
-                $notice['reactions'] = $data['reactions'];
-            }
+            // comments / reactions は専用エンドポイント (add-comment / toggle-reaction) で操作する
             $updated = true;
             break;
         }
     }
-    
+    unset($notice);
+
     if (!$updated) {
         sendError('回覧板が見つかりません', 404);
     }
-    
+
     if (!writeJsonFile(NOTICES_FILE, $notices)) {
         sendError('回覧板の更新に失敗しました', 500);
     }
-    
+
     sendJson(['success' => true]);
 }
 
@@ -376,10 +372,19 @@ function sendNoticeNotification($notice, $type = 'new', $targetUserIds = null) {
         }
         
         // 各ユーザーに通知を送信
+        // ループ外で一括読み込みし、最後に1回だけ書き込む（通知欠損・多重書き込みを防止）
+        $notifications = readJsonFile(PENDING_NOTIFICATIONS_FILE, []);
+        $subscriptions = readJsonFile(SUBSCRIPTIONS_FILE, []);
+        $pushPayload = [
+            'title' => $title,
+            'body'  => $body,
+            'source' => 'kairanban',
+            'icon' => './kairanban/icon-192.png',
+            'url' => './kairanban/'
+        ];
+
         foreach ($targetUsers as $user) {
-            // ブラウザ通知用のデータを保存
-            $notifications = readJsonFile(PENDING_NOTIFICATIONS_FILE, []);
-            
+            // ブラウザ通知用のデータを追記
             $notifications[] = [
                 'id' => uniqid('notif_', true),
                 'userId' => $user['id'],
@@ -389,68 +394,22 @@ function sendNoticeNotification($notice, $type = 'new', $targetUserIds = null) {
                 'createdAt' => time(),
                 'read' => false
             ];
-            // PUSH送信（★追加）
-            $subscriptions = readJsonFile(SUBSCRIPTIONS_FILE, []);
+
+            // PUSH送信
             foreach ($subscriptions as $sub) {
                 if ($sub['userId'] === $user['id']) {
-                    $payload = [
-                    'title' => $title,
-                    'body'  => $body,
-                    'source' => 'kairanban',
-                    'icon' => './kairanban/icon-192.png',
-                    'url' => './kairanban/'
-                    ];
                     try {
-                        sendWebPush($sub['subscription'], $payload);
+                        sendWebPush($sub['subscription'], $pushPayload);
                     } catch (Exception $e) {
                         error_log("PUSH送信失敗: " . $e->getMessage());
                     }
-
                 }
             }
-
-            // 最新100件のみ保持
-            $notifications = array_slice($notifications, -100);
-            writeJsonFile(PENDING_NOTIFICATIONS_FILE, $notifications);
-            
-            /*
-            // メール通知を送信
-            $settings = readJsonFile(USER_NOTIFICATION_SETTINGS_FILE, []);
-            $userSettings = $settings[$user['id']] ?? ['emailEnabled' => true];
-            
-            if ($userSettings['emailEnabled']) {
-                $to = $user['email'];
-                $subject = "[スマート回覧板] " . $title;
-                
-                $message = "{$user['name']} 様
-
-{$body}
-
-タイトル: {$notice['title']}
-内容: " . mb_substr(strip_tags($notice['content']), 0, 100) . "...
-
-ログインして詳細を確認してください。
-
----
-スマート回覧板";
-                
-                $headers = [
-                    'From: noreply@' . $_SERVER['HTTP_HOST'],
-                    'Reply-To: noreply@' . $_SERVER['HTTP_HOST'],
-                    'Content-Type: text/plain; charset=UTF-8'
-                ];
-                
-                $result = mail($to, $subject, $message, implode("
-", $headers));
-                
-                if ($result) {
-                    error_log("メール送信成功: {$to} - {$title}");
-                } else {
-                    error_log("メール送信失敗: {$to} - {$title}");
-                }
-            }
-            */
         }
+
+        // 最新100件のみ保持してから1回だけ書き込む
+        $notifications = array_slice($notifications, -100);
+        writeJsonFile(PENDING_NOTIFICATIONS_FILE, $notifications);
         
         return true;
     } catch (Exception $e) {

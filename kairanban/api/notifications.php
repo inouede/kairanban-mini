@@ -299,7 +299,8 @@ function handleSendNotification() {
             }
         }
         
-        error_log("[notifications.php] ✅ 通知送信完了: {$successCount}/{count($results)}件成功");
+        $totalCount = count($results);
+        error_log("[notifications.php] ✅ 通知送信完了: {$successCount}/{$totalCount}件成功");
         
         sendJson([
             'success' => true,
