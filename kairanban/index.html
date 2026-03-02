@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Circular Notice System</title>
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="回覧板">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        /* 「デモ用アカウント：」テキストを非表示 */
+        .text-slate-400.text-xs.font-medium {
+            display: none !important;
+        }
+        /* 一般住民ログインボタンをsubmitボタンと同等のデザインに */
+        .text-\[10px\].bg-slate-100.text-slate-500.px-3.py-1\.5.rounded-full {
+            display: block !important;
+            width: 100% !important;
+            padding: 1.25rem !important;
+            background-color: #f1f5f9 !important;
+            color: #475569 !important;
+            font-weight: 800 !important;
+            font-size: 1rem !important;
+            border-radius: 1rem !important;
+            box-shadow: 0 10px 15px -3px rgba(148,163,184,0.2) !important;
+            transition: all 0.2s !important;
+            margin-top: 0 !important;
+        }
+        .text-\[10px\].bg-slate-100.text-slate-500.px-3.py-1\.5.rounded-full:hover {
+            background-color: #e2e8f0 !important;
+            transform: scale(1.02) !important;
+        }
+        .text-\[10px\].bg-slate-100.text-slate-500.px-3.py-1\.5.rounded-full:active {
+            transform: scale(0.98) !important;
+        }
+        /* デモブロックのコンテナ余白・区切り線を調整 */
+        .mt-10.pt-6.border-t.border-slate-100.flex.flex-col.items-center.gap-2 {
+            margin-top: 1rem !important;
+            padding-top: 1rem !important;
+            gap: 0 !important;
+        }
+        /* 未読の回覧カードを最初から非表示（初回描画時のちらつき防止） */
+        /* bg-blue-100アイコンを含むカード全体（その祖父div）を非表示 */
+        div:has(> .w-12.h-12.rounded-full.bg-blue-100) {
+            display: none !important;
+        }
+    </style>
+
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "recharts": "https://esm.sh/recharts@^3.6.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="./assets/index-BTCN-spV.js"></script>
+  <script src="./assets/push-notifications.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="./assets/kairanban_subscription_sync.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('[ULTIMATE SCRIPT] Loaded. This is the final attempt.');
+
+      const hideElement = (el) => {
+        if (el && el.style.display !== 'none') {
+            el.style.display = 'none';
+        }
+      };
+
+      const runHidingLogic = () => {
+        try {
+            // --- Hide Static Elements ---
+            const staticSelectors = [
+                { id: 'unreadCount', selector: '.grid.grid-cols-1.md\\:grid-cols-3.gap-6 > div:first-child', text: '未読の回覧' },
+                { id: 'readRateTrend', selector: 'h3', text: '既読率の推移', closest: '.lg\\:col-span-2' },
+                { id: 'readList', selector: 'h3', text: '既読者リスト', closest: '.lg\\:col-span-3.grid' },
+                { id: 'unreadList', selector: 'h3', text: '未読者リスト', closest: '.bg-white.p-8.rounded-3xl' }
+            ];
+            for (const item of staticSelectors) {
+                if (document.body.dataset[item.id]) continue;
+                const element = Array.from(document.querySelectorAll(item.selector)).find(el => el.textContent.includes(item.text));
+                if (element) {
+                    const target = item.closest ? element.closest(item.closest) : element;
+                    hideElement(target);
+                    document.body.dataset[item.id] = 'true';
+                }
+            }
+            
+            // --- Hide Dynamic/Repeating Elements ---
+            document.querySelectorAll('span').forEach(el => {
+              if (el.textContent.includes('名が既読')) {
+                hideElement(el.parentElement);
+              }
+            });
+
+            // --- メール通知設定（labelとp警告）を非表示 ---
+            document.querySelectorAll('label').forEach(el => {
+              if (el.textContent.includes('メール通知') && el.textContent.includes('メールで通知')) {
+                hideElement(el);
+              }
+            });
+            document.querySelectorAll('p').forEach(el => {
+              if (el.textContent.includes('メール通知の利用をおすすめします')) {
+                hideElement(el);
+              }
+            });
+
+            // --- ULTIMATE SEARCH: Hide Target Element (Email Setting) with Shadow DOM support ---
+            const searchAndHideEmailSetting = (rootNode) => {
+                const textToFind = '新しい回覧板や催促をメールで通知';
+                // Use wildcard (*) to search ALL elements, excluding this script itself.
+                const elements = rootNode.querySelectorAll('*:not([data-ultimate-script])');
+
+                for (const el of elements) {
+                    if (el.textContent && el.textContent.includes(textToFind)) {
+                        let container = el;
+                        for (let i = 0; i < 10 && container; i++) {
+                            if (container.querySelector && container.querySelector('[role="switch"]')) {
+                                if (container.style.display !== 'none') {
+                                    console.log(`%c[SUCCESS] Email notification setting hidden successfully in ${rootNode.host ? 'Shadow DOM' : 'Main DOM'}.`, 'color: #00e676; font-weight: bold; font-size: 14px;');
+                                }
+                                hideElement(container);
+                                return;
+                            }
+                            container = container.parentElement;
+                        }
+                    }
+                }
+            };
+            
+            // Execute search on the main document and all shadow roots
+            searchAndHideEmailSetting(document.body);
+            document.querySelectorAll('*').forEach(el => {
+                if (el.shadowRoot) {
+                    searchAndHideEmailSetting(el.shadowRoot);
+                }
+            });
+
+        // --- 一般住民ログイン：1クリックでダッシュボードへ ---
+        const residentBtn = Array.from(document.querySelectorAll('button')).find(
+            el => el.textContent.trim() === '一般住民ログイン' && !el.dataset.autoLogin
+        );
+        if (residentBtn) {
+            residentBtn.dataset.autoLogin = 'true';
+            residentBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    const submitBtn = document.querySelector('button[type="submit"]');
+                    if (submitBtn && !submitBtn.disabled) {
+                        submitBtn.click();
+                    }
+                }, 100);
+            });
+        }
+
+        } catch (e) {
+            console.error('[ULTIMATE SCRIPT] A critical error occurred. The script has been stopped.', e);
+            if (window.kairanbanObserver) {
+                window.kairanbanObserver.disconnect();
+            }
+        }
+      };
+
+      // Add a marker to this script tag to exclude it from searches
+      const thisScript = document.currentScript;
+      if(thisScript) thisScript.dataset.ultimateScript = 'true';
+
+      const observer = new MutationObserver(runHidingLogic);
+      window.kairanbanObserver = observer;
+
+      const root = document.getElementById('root');
+      if (root) {
+          observer.observe(root, { childList: true, subtree: true });
+          console.log('[ULTIMATE SCRIPT] Persistent observer started.');
+      }
+    });
+  </script>
+</body>
+</html>
