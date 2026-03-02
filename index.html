@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <!-- ↓iPhone用にURLバーを表示しない設定を追加↓ -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+    <!-- ↓iPhone用にアイコン設定を追加↓ -->
+    <link rel="apple-touch-icon" href="images/icons-192.png" />
+    <!-- ↓iPhone用にスプラッシュ画面の設定を追加↓ -->
+    <link
+      href="images/iphone5_splash.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="images/iphone6_splash.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="images/iphoneplus_splash.png"
+      media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="images/iphonex_splash.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="images/iphonexr_splash.png"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="images/iphonexsmax_splash.png"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+      rel="apple-touch-startup-image"
+    />
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1JFVMYL7VF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1JFVMYL7VF');
+</script>
+
+    <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Zen Maru Gothic" rel="stylesheet">
+    <style type="text/css">
+      @media screen and (orientation: landscape) {
+        /* 横向きの場合のスタイル */
+        #tate {
+          display: none;
+        }
+      }
+      @media screen and (orientation: portrait) {
+        /* 縦向きの場合のスタイル */
+      }
+        * {
+    font-family: 'Zen Maru Gothic';
+}
+/* ボタンデザイン */        
+.column{
+    width:95vw;
+    margin: 0 2.5vw 1vh 2.5vw;
+}
+.button1{
+    width: 44vw;
+    height:150px;
+    box-shadow: 0px 10px 14px -7px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(var(--g-angle), var(--g-color-0) var(--g-position-0), var(--g-color-1) var(--g-position-1));
+    border-radius: 16px;
+	display:inline-block;
+    --g-color-0: #ff0844;
+    --g-position-0: 0%;
+    --g-color-1: #ffb199;
+    --g-position-1: 100%;
+    --g-angle: 0deg;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+    position: relative;
+    margin:0 1vw;
+}
+.button2{
+    width: 44vw;
+    height:150px;
+    box-shadow: 0px 10px 14px -7px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(var(--g-angle), var(--g-color-0) var(--g-position-0), var(--g-color-1) var(--g-position-1));
+    border-radius: 16px;
+	display:inline-block;
+    --g-color-0: #0ba360;
+    --g-position-0: 0%;
+    --g-color-1: #3cba92;
+    --g-position-1: 100%;
+    --g-angle: 0deg;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+    position: relative;
+    margin:0 1vw;
+}
+.button2tel{
+    width: 44vw;
+    height: 120px;
+    box-shadow: 0px 10px 14px -7px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(var(--g-angle), var(--g-color-0) var(--g-position-0), var(--g-color-1) var(--g-position-1));
+    border-radius: 16px;
+    display: inline-block;
+    --g-color-0: #0ba360;
+    --g-position-0: 0%;
+    --g-color-1: #3cba92;
+    --g-position-1: 100%;
+    --g-angle: 0deg;
+    font-family: Arial;
+    font-weight: bold;
+    position: relative;
+    margin: 0 1vw;
+    text-align: center;
+    padding-top: 40px;
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+}
+.button3{
+    width: 44vw;
+    height:150px;
+    box-shadow: 0px 10px 14px -7px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(var(--g-angle), var(--g-color-0) var(--g-position-0), var(--g-color-1) var(--g-position-1));
+    border-radius: 16px;
+	display:inline-block;
+    --g-color-0: #00c6fb;
+    --g-position-0: 0%;
+    --g-color-1: #005bea;
+    --g-position-1: 100%;
+    --g-angle: 0deg;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+    position: relative;
+    margin:0 1vw;
+}
+.button1 p,.button2 p,.button3 p{
+    width: 100%;
+    height:150px;
+    text-align: center;
+    line-height:150px;
+	color:#ffffff;
+	text-decoration:none;
+    position: absolute;
+    margin: 0;
+    font-size: 20px;
+        }
+.button2tel a{
+    text-align: center;
+	color:#ffffff;
+	text-decoration:none;
+        }
+.kazari{
+    height: 30px;
+    left: 3px;
+    position: absolute;
+    top: 3px;
+    width: 90%;
+    border-radius: 15px 0px 0px 0px;
+}
+
+/* ★★★ 必須通知モーダルのスタイル ★★★ */
+.notification-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.notification-modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.3s ease-out;
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.notification-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.allow-button {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.allow-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.allow-button:active {
+    transform: translateY(0);
+}
+
+.allow-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+        
+    </style>
+    <meta name="format-detection" content="telephone=no" />
+      <script src="https://kit.fontawesome.com/e3de4b5bdc.js" crossorigin="anonymous"></script>
+    <meta name="theme-color" content="#33c4ff" />
+    <link rel="icon" href="favicon.ico" />
+
+    <script type="application/javascript">
+      window.addEventListener('DOMContentLoaded', (event) => {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistration().then((registration) => {
+            navigator.serviceWorker
+              .register('sw.js', {
+                scope: './',
+              })
+              .then((registration) => {
+                if (!!registration) {
+                  console.log('Service worker has already been installed')
+                  if (registration.installing) {
+                    console.log('Service worker installing')
+                  } else if (registration.waiting) {
+                    console.log('Service worker installed')
+                  } else if (registration.active) {
+                    console.log('Service worker active')
+                  }
+                  registration.onupdatefound = function () {
+                    registration.update()
+                    alert('更新されました')
+                  }
+                } else {
+                  console.log('Service worker installed for the first time')
+                }
+              })
+              .catch((error) => {
+                console.log('Error:', error)
+              })
+          })
+
+        }
+      })
+    </script>
+<!--ここからA2HS-->
+        <meta name="apple-mobile-web-app-title" content="APP NAME" />
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="styles.css" />
+<!--ここまでA2HS-->
+
+<!--ここから必須プッシュ通知モーダル-->
+<script>
+'use strict';
+
+// ============================================
+// グローバル変数
+// ============================================
+window.LESSQ_NOTIFICATION = {
+  modalShown: false,
+  isIOS: false,
+  vapidPublicKey: 'BOD-84nzA76xfIQfOON7P9AQeciAsf8GjNsg_25UDDiGI1WWVeY3jJy_GLUo2UD5Zn-9ur-P5MXhc_HSLjgWxI0',
+  debugLog: []
+};
+
+// ============================================
+// デバッグログ保存
+// ============================================
+function debugLog(message, data) {
+  const log = {
+    time: new Date().toISOString(),
+    message: message,
+    data: data
+  };
+  window.LESSQ_NOTIFICATION.debugLog.push(log);
+  console.log('[防災lessQ]', message, data || '');
+}
+
+// ============================================
+// 初期化
+// ============================================
+window.addEventListener('DOMContentLoaded', async () => {
+  debugLog('プッシュ通知システム初期化開始');
+  
+  // iOS検出
+  window.LESSQ_NOTIFICATION.isIOS = isIOS();
+  debugLog('iOS検出', window.LESSQ_NOTIFICATION.isIOS);
+  
+  // Service Worker & PushManager チェック
+  if (!('serviceWorker' in navigator)) {
+    debugLog('❌ Service Worker非対応');
+    return;
+  }
+  if (!('PushManager' in window)) {
+    debugLog('❌ PushManager非対応');
+    return;
+  }
+  
+  debugLog('✅ Service Worker & PushManager対応');
+  
+  // Service Worker準備完了を待つ
+  setTimeout(async () => {
+    await checkAndShowModal();
+  }, 2000);
+  
+  debugLog('初期化完了');
+});
+
+// ============================================
+// iOS検出
+// ============================================
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+// ============================================
+// 購読状況チェック
+// ============================================
+async function checkIfSubscribed() {
+  try {
+    debugLog('購読状況チェック開始');
+    
+    const registration = await navigator.serviceWorker.ready;
+    debugLog('Service Worker準備完了', registration);
+    
+    const subscription = await registration.pushManager.getSubscription();
+    const isSubscribed = subscription !== null;
+    
+    debugLog('購読状況', {
+      isSubscribed: isSubscribed,
+      subscription: subscription ? JSON.stringify(subscription) : null
+    });
+    
+    return isSubscribed;
+  } catch (error) {
+    debugLog('❌ 購読確認エラー', error.message);
+    console.error('[防災lessQ] 購読確認エラー:', error);
+    return false;
+  }
+}
+
+// ============================================
+// モーダル表示判定
+// ============================================
+async function checkAndShowModal() {
+  debugLog('モーダル表示判定開始');
+  
+  if (window.LESSQ_NOTIFICATION.modalShown) {
+    debugLog('既に表示済み');
+    return;
+  }
+  
+  const isSubscribed = await checkIfSubscribed();
+  
+  if (isSubscribed) {
+    debugLog('✅ 既に購読済み - モーダル不要');
+    return;
+  }
+  
+  // ★★★ iOSの場合のみモーダル表示 ★★★
+  if (window.LESSQ_NOTIFICATION.isIOS) {
+    debugLog('iOS & 未購読 - 必須モーダル表示');
+    showMandatoryNotificationModal();
+  } else {
+    // Android: 自動で許可リクエスト
+    debugLog('Android & 未購読 - 自動許可リクエスト');
+    if (Notification.permission === 'default') {
+      const permission = await Notification.requestPermission();
+      debugLog('Android通知許可結果', permission);
+      if (permission === 'granted') {
+        await performSubscription();
+      }
+    } else if (Notification.permission === 'granted') {
+      await performSubscription();
+    }
+  }
+}
+
+// ============================================
+// 必須モーダル表示
+// ============================================
+function showMandatoryNotificationModal() {
+  if (window.LESSQ_NOTIFICATION.modalShown) return;
+  
+  window.LESSQ_NOTIFICATION.modalShown = true;
+  debugLog('必須モーダル表示開始');
+  
+  const modal = document.createElement('div');
+  modal.className = 'notification-modal';
+  modal.id = 'lessq-notification-modal';
+  
+  modal.innerHTML = `
+    <div class="notification-modal-content" id="modal-content">
+      <div class="notification-icon">
+        <svg width="44" height="44" fill="white" viewBox="0 0 24 24">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+        </svg>
+      </div>
+      
+      <h2 style="font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #1f2937;">
+        通知の許可が必要です
+      </h2>
+      
+      <p style="font-size: 15px; color: #6b7280; text-align: center; margin-bottom: 30px; line-height: 1.8;">
+        防災情報や回覧板の配信をプッシュ通知でお知らせします。<br><br>
+        <strong style="color: #374151;">ご利用には通知の許可が必要です。</strong>
+      </p>
+      
+      <button id="allow-notification-btn" class="allow-button">
+        通知を許可して続ける
+      </button>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // 背景クリック無効化
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      e.preventDefault();
+      e.stopPropagation();
+      const content = document.getElementById('modal-content');
+      content.classList.remove('shake');
+      setTimeout(() => content.classList.add('shake'), 10);
+      debugLog('背景クリック無効化');
+    }
+  });
+  
+  // ESCキー無効化
+  const escapeHandler = (e) => {
+    if (e.key === 'Escape' && document.getElementById('lessq-notification-modal')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const content = document.getElementById('modal-content');
+      content.classList.remove('shake');
+      setTimeout(() => content.classList.add('shake'), 10);
+      debugLog('ESCキー無効化');
+    }
+  };
+  document.addEventListener('keydown', escapeHandler, { capture: true });
+  
+  // 許可ボタン
+  const allowButton = document.getElementById('allow-notification-btn');
+  allowButton.addEventListener('click', async () => {
+    debugLog('許可ボタンクリック');
+    allowButton.disabled = true;
+    allowButton.textContent = '処理中...';
+    
+    const success = await handleNotificationPermission();
+    
+    if (success) {
+      debugLog('通知許可成功 - モーダルを閉じる');
+      document.removeEventListener('keydown', escapeHandler, { capture: true });
+      modal.remove();
+      
+      // ★★★ 成功メッセージ ★★★
+      alert('✅ 通知設定が完了しました！\n\n回覧板などのすべてのシステムで通知が届くようになります。');
+      
+    } else {
+      debugLog('通知許可失敗 - ボタン再有効化');
+      allowButton.disabled = false;
+      allowButton.textContent = '通知を許可して続ける';
+    }
+  });
+  
+  debugLog('モーダル表示完了');
+}
+
+// ============================================
+// 通知許可処理
+// ============================================
+async function handleNotificationPermission() {
+  try {
+    debugLog('通知許可リクエスト開始');
+    
+    const permission = await Notification.requestPermission();
+    debugLog('許可結果', permission);
+    
+    if (permission === 'granted') {
+      debugLog('✅ 許可された');
+      
+      const subscribed = await performSubscription();
+      
+      if (subscribed) {
+        debugLog('✅ 購読登録成功');
+        return true;
+      } else {
+        debugLog('❌ 購読登録失敗');
+        
+        // ★★★ デバッグログを表示 ★★★
+        const logs = window.LESSQ_NOTIFICATION.debugLog.map(log => 
+          `${log.time}: ${log.message} ${log.data ? JSON.stringify(log.data) : ''}`
+        ).join('\n');
+        
+        alert('⚠️ 購読登録に失敗しました。\n\n詳細:\n' + logs.slice(-500)); // 最後の500文字
+        return false;
+      }
+      
+    } else if (permission === 'denied') {
+      debugLog('❌ 拒否された');
+      alert('⚠️ 通知が拒否されました。\n\n防災lessQを利用するには通知の許可が必要です。\n\nデバイスの設定から通知を許可してください。');
+      return false;
+      
+    } else {
+      debugLog('⚠️ デフォルト（閉じられた）');
+      alert('⚠️ 防災lessQを利用するには通知の許可が必要です。\n\nもう一度「許可」を選択してください。');
+      return false;
+    }
+    
+  } catch (error) {
+    debugLog('❌ エラー', error.message);
+    console.error('[防災lessQ] エラー:', error);
+    alert('❌ エラーが発生しました:\n' + error.message + '\n\nStack:\n' + error.stack);
+    return false;
+  }
+}
+
+// ============================================
+// 購読登録実行
+// ============================================
+async function performSubscription() {
+  try {
+    debugLog('購読登録開始');
+    
+    // Service Worker準備確認
+    debugLog('Service Worker準備確認中');
+    const registration = await navigator.serviceWorker.ready;
+    debugLog('Service Worker準備完了', {
+      scope: registration.scope,
+      active: registration.active ? true : false
+    });
+    
+    // VAPIDキー変換
+    debugLog('VAPIDキー変換中');
+    const convertedVapidKey = urlBase64ToUint8Array(window.LESSQ_NOTIFICATION.vapidPublicKey);
+    debugLog('VAPIDキー変換完了', {
+      length: convertedVapidKey.length
+    });
+    
+    // プッシュ購読
+    debugLog('pushManager.subscribe開始');
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: convertedVapidKey
+    });
+    
+    debugLog('✅ ブラウザ購読成功', {
+      endpoint: subscription.endpoint.slice(0, 50) + '...'
+    });
+    
+    // localStorageに保存
+    try {
+      localStorage.setItem('lessq_push_subscription', JSON.stringify(subscription));
+      debugLog('✅ localStorageに保存');
+    } catch (e) {
+      debugLog('⚠️ localStorage保存失敗', e.message);
+    }
+    
+    return true;
+    
+  } catch (error) {
+    debugLog('❌ 購読失敗', {
+      message: error.message,
+      stack: error.stack
+    });
+    console.error('[防災lessQ] 購読失敗:', error);
+    return false;
+  }
+}
+
+// ============================================
+// ユーティリティ
+// ============================================
+function urlBase64ToUint8Array(base64String) {
+  try {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  } catch (error) {
+    debugLog('❌ VAPIDキー変換エラー', error.message);
+    throw error;
+  }
+}
+</script>
+<!--ここまで必須プッシュ通知モーダル-->
+
+</head>
+
+  <body>
+    <!--ここからARコンテンツ-->
+    <a-scene
+      embedded
+      arjs="debugUIEnabled:false; patternRatio: 0.9;sourceType:webcam;"
+      vr-mode-ui="enabled: false"
+      cursor="rayOrigin: mouse"
+      device-orientation-permission-ui="enabled: false"
+      style="backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px)"
+    >
+      <a-marker> </a-marker>
+      <a-entity camera>
+        <!-- cursor: trueにすると時間になったら自動でリンク先に飛ぶ-->
+        <a-entity cursor="fuse: false; fuseTimeout: 500"> </a-entity>
+      </a-entity>
+    </a-scene>
+    <!--ここまでARコンテンツ-->
+
+    <div id="tate" style="margin: auto 0;">
+      <!--縦向きのみ表示-->
+
+<!--ここから固定コンテンツ-->
+<div style="width:100vw;height:10vh;position:absolute;top:0;z-index:99;">
+<a href="##########" target="_blank" style="text-decoration:none;"><p style="text-align:center;color:white;font-size:24px;font-weight: bold;line-height:24px;">防災lessQサンプル</p></a>
+</div>
+
+<div style="position:absolute;top:10vh;    align-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: 40px 40px 0px 0px;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    padding: 30px 0px 30px 0px;
+    width: 100%;
+    max-width: 100%;
+">
+    
+<!--ここからカラム3-->
+<div class="column">
+    <div class="button3" style="width:95%;">
+  <a href="kairanban/" target="_blank">
+<p>回覧板</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+</div>
+<!--ここまでカラム3-->
+<!--ここからカラム1-->
+<div class="column">
+    <div class="button1">
+  <a href="https://forms.gle/P4QRHddP5LzcEEiz8" target="_blank">
+<p>安否入力</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+    
+    <div class="button1">
+  <a href="https://docs.google.com/spreadsheets/d/18zgV_sZMYFqj8IrHofQdLEMbmXr3EQX22cRZcJuw1yI/edit?usp=sharing" target="_blank">
+<p>安否閲覧</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+</div>
+<!--ここまでカラム1-->
+<!--ここからカラム2-->
+<div class="column">
+    <div class="button2" style="width:90vw;">
+  <a href="https://script.google.com/macros/s/AKfycbzqsLCB4rUrzsx-Gfwbjz8kgIyJTjk6-91Y6neKiVoSwrp2gUeHa_i1vZiXhX6rTcTQ/exec" target="_blank">
+<p>掲示板</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>    
+</div>
+<!--ここまでカラム2-->
+<!--ここからカラム3-->
+<div class="column">
+    <div class="button2">
+<a href="https://script.google.com/macros/s/AKfycbyo3JfyBDNaAAq7nC72Ee_fYgw_inEC4tZjqgTq0VvoRMvnWIg5R8lRAyUQJs8ucwe9SA/exec">
+<p>班編成表</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+    
+    <div class="button2">
+  <a href="https://docs.google.com/spreadsheets/d/1lP51UGX-kKwQQRQMaGF-dSHoHuxWBNfBh2aJ07Lysok/edit?usp=sharing" target="_blank">
+<p>避難所開設状況</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+</div>
+<!--ここまでカラム3-->
+<!--ここからカラム4-->
+<div class="column">
+    <div class="button2tel">
+<a onClick="return confirm('消防署小塚出張所に電話しますか？')" href="tel:0847000000" target="_blank">
+<i class="fa fa-phone" style="color:white;font-size:36px;margin:0 0 15px 0;padding:0;"></i>
+<p style="margin:0;padding:0;">消防署小塚出張所</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+    
+    <div class="button2tel">
+<a onClick="return confirm('町役場総務課に電話しますか？')" href="tel:0847000000" target="_blank">
+<i class="fa fa-phone" style="color:white;font-size:36px;margin:0 0 15px 0;padding:0;"></i>
+<p style="margin:0;padding:0;">町役場総務課</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+    
+</div>
+<!--ここまでカラム4-->
+<!--ここからカラム5-->
+<div class="column">
+    <div class="button3">
+  <a href="https://www.river.go.jp/kawabou/mb/tm?zm=13&clat=34.68050632281546&clon=133.251227&fld=0&mapType=0&viewGrpStg=0&viewRd=1&viewRW=1&viewRiver=1&viewPoint=1&ext=0&itmkndCd=200&scamId=108705063&ownCd=8705&sysCamId=8705063" target="_blank">
+<p>川のカメラ</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+    
+    <div class="button3">
+  <a href="https://www.jinsekigun.jp/site/bosai/hazardmap/index.html" target="_blank">
+<p>ハザードMAP</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+</div>
+<!--ここまでカラム5-->
+<!--ここからカラム6-->
+<div class="column">
+    <div class="button3">
+  <a href="https://www.river.go.jp/kawabou/pc/tm?zm=15&clat=34.8277778&clon=133.2347222&fld=0&ofcCd=27393&itmkndCd=7&obsCd=15&mapType=0&viewGrpStg=0&viewRd=1&viewRW=1&viewRiver=1&viewPoint=1" target="_blank">
+<p>ダムの水位</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+    
+    <div class="button3">
+  <a href="https://weathernews.jp/onebox/radar/hiroshima/?gps=1&lat=34.7778823&lon=133.2118027" target="_blank">
+<p>雨雲レーダー</p>
+<img class="kazari" alt="" src="kazari.webp">
+</a>
+    </div>
+</div>
+<!--ここまでカラム6-->
+    
+</div>
+        
+</div><!--縦向きのみ表示-->
+</body>
+</html>
