@@ -1,0 +1,18 @@
+# VAPID秘密鍵 — リポジトリに含めない（サーバー上で generate-vapid-keys.php で生成する）
+kairanban/data/vapid.json
+
+# 実データ（ユーザー情報・回覧板データ）はリポジトリに含めない
+kairanban/data/users.json
+kairanban/data/notices.json
+kairanban/data/subscriptions.json
+kairanban/data/audit_logs.json
+kairanban/data/pending_notifications.json
+kairanban/data/departments.json
+kairanban/data/settings.json
+kairanban/data/error.log
+
+# バックアップファイル
+kairanban/data/*.backup.*
+
+# Composer vendor（デプロイ時に composer install で再生成）
+# kairanban/vendor/  ← 現状 vendor はコミットしているため除外しない

@@ -164,45 +164,42 @@ function handleSubscribe() {
 }
 
 /**
- * ★★★ 新規: 購読が現在のユーザーに紐づいているか確認 ★★★
+ * 購読が現在のユーザーに紐づいているか確認
  */
 function handleCheckUserSubscription() {
-    checkAuth();
+    $currentUser = checkAuth();
     $data = getPostData();
-    
-    if (!isset($data['subscription']) || !isset($data['userId'])) {
-        sendError('subscriptionとuserIdが必要です');
+
+    if (!isset($data['subscription'])) {
+        sendError('subscriptionが必要です');
     }
-    
+
     $subscription = $data['subscription'];
-    $userId = $data['userId'];
+    // クライアントから渡される userId は無視し、セッションのユーザーIDを使う（IDOR防止）
+    $userId = $currentUser['id'];
     $endpoint = $subscription['endpoint'];
-    
+
     // 購読情報を読み込み
     $subscriptions = readJsonFile(SUBSCRIPTIONS_FILE, []);
-    
+
     // このendpointを持つ購読を探す
     foreach ($subscriptions as $sub) {
         if ($sub['subscription']['endpoint'] === $endpoint) {
-            // 見つかった - ユーザーIDが一致するか確認
+            // 見つかった - セッションユーザーIDが一致するか確認
             $isSubscribed = ($sub['userId'] === $userId);
-            
+
             sendJson([
                 'success' => true,
-                'isSubscribed' => $isSubscribed,
-                'registeredUserId' => $sub['userId'],
-                'registeredUserName' => $sub['userName'],
-                'currentUserId' => $userId
+                'isSubscribed' => $isSubscribed
             ]);
             return;
         }
     }
-    
+
     // 見つからなかった
     sendJson([
         'success' => true,
-        'isSubscribed' => false,
-        'message' => 'この購読は登録されていません'
+        'isSubscribed' => false
     ]);
 }
 
@@ -210,22 +207,23 @@ function handleCheckUserSubscription() {
  * プッシュ通知購読を解除
  */
 function handleUnsubscribe() {
-    checkAuth();
+    $currentUser = checkAuth();
     $data = getPostData();
-    
+
     if (!isset($data['endpoint'])) {
         sendError('endpointが必要です');
     }
-    
+
     $endpoint = $data['endpoint'];
-    
+    $userId = $currentUser['id'];
+
     // 購読情報を読み込み
     $subscriptions = readJsonFile(SUBSCRIPTIONS_FILE, []);
     $originalCount = count($subscriptions);
-    
-    // 該当する購読を削除
-    $subscriptions = array_filter($subscriptions, function($sub) use ($endpoint) {
-        return $sub['subscription']['endpoint'] !== $endpoint;
+
+    // 自分の購読のみ削除（他ユーザーの購読を誤削除しない）
+    $subscriptions = array_filter($subscriptions, function($sub) use ($endpoint, $userId) {
+        return !($sub['subscription']['endpoint'] === $endpoint && $sub['userId'] === $userId);
     });
     $subscriptions = array_values($subscriptions);
     

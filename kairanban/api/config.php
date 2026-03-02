@@ -158,13 +158,19 @@ function checkAdmin() {
 }
 
 /**
- * 入力値のサニタイズ
+ * 入力値のサニタイズ（最大長: デフォルト 1000 文字）
  */
-function sanitize($value) {
+function sanitize($value, $maxLength = 1000) {
     if (is_array($value)) {
-        return array_map('sanitize', $value);
+        return array_map(function($v) use ($maxLength) {
+            return sanitize($v, $maxLength);
+        }, $value);
     }
-    return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+    $trimmed = trim((string)$value);
+    if (mb_strlen($trimmed, 'UTF-8') > $maxLength) {
+        $trimmed = mb_substr($trimmed, 0, $maxLength, 'UTF-8');
+    }
+    return htmlspecialchars($trimmed, ENT_QUOTES, 'UTF-8');
 }
 
 /**
