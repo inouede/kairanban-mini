@@ -389,6 +389,7 @@ function sendNoticeNotification($notice, $type = 'new', $targetUserIds = null) {
             'body'  => $body,
             'source' => 'kairanban',
             'icon' => './kairanban/icon-192.png',
+            'badge' => './kairanban/icon-192.png',
             'url' => './kairanban/'
         ];
 

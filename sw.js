@@ -42,7 +42,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: notification.body || '',
         icon: notification.icon || '/lessq5/icon-192.png',
-        badge: '/lessq5/icon-192.png',
+        badge: notification.badge || '/lessq5/icon-192.png',
         data: {
             url: notification.url || '/lessq5/',
             source: notification.source || 'unknown'
